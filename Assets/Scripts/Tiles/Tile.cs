@@ -1,3 +1,4 @@
+using BattleShips.Ships;
 using UnityEngine;
 
 namespace BattleShips.Tiles
@@ -7,12 +8,25 @@ namespace BattleShips.Tiles
         private int x;
         private int y;
         private GameObject tileObj;
+        private bool ownerPlayer = false;
+        private ShipPartHandler shipPart = null;
 
-        public Tile(int x, int y, GameObject tileObj)
+        public Tile(int x, int y, GameObject tileObj, bool isOwnerPlayer)
         {
             this.x = x;
             this.y = y;
             this.tileObj = tileObj;
+            this.ownerPlayer = isOwnerPlayer;
+        }
+
+        public void SetShipPart(ShipPartHandler newShipPart)
+        {
+            shipPart = newShipPart;
+        }
+
+        public bool HasShipPart()
+        {
+            return shipPart != null;
         }
 
         public Vector2 GetPosition()
@@ -24,6 +38,11 @@ namespace BattleShips.Tiles
         {
             X = this.x;
             Y = this.y;
+        }
+
+        public bool IsOwnerPlayer()
+        {
+            return ownerPlayer;
         }
 
         public GameObject GetTileObj()
