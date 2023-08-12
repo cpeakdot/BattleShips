@@ -10,6 +10,7 @@ namespace BattleShips.Tiles
         private GameObject tileObj;
         private bool ownerPlayer = false;
         private ShipPartHandler shipPart = null;
+        private TileStatus tileStatus;
 
         public Tile(int x, int y, GameObject tileObj, bool isOwnerPlayer)
         {
@@ -45,10 +46,16 @@ namespace BattleShips.Tiles
             return ownerPlayer;
         }
 
+        public TileStatus GetTileStatus()
+        {
+            return tileStatus;
+        }
+
         public GameObject GetTileObj()
         {
             return tileObj;
         }
+
         public override string ToString()
         {
             return $"x= {x}, y= {y}";

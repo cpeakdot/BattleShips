@@ -32,7 +32,9 @@ namespace BattleShips.Ships
         {
             for (int i = 0; i < SHIP_PER_PLAYER; i++)
             {
-                Ship newShip = new Ship(true);
+                GameObject shipObj = new GameObject();
+                shipObj.name = $"Player {i}";
+                Ship newShip = new Ship(true, shipObj.transform);
                 playerShips[i] = newShip;
                 CreateShip(newShip, i + 1);
             }
@@ -42,7 +44,9 @@ namespace BattleShips.Ships
         {
             for (int i = 0; i < SHIP_PER_PLAYER; i++)
             {
-                Ship newShip = new Ship(true);
+                GameObject shipObj = new GameObject();
+                shipObj.name = $"Enemy {i}";
+                Ship newShip = new Ship(true, shipObj.transform);
                 enemyShips[i] = newShip;
                 CreateShip(newShip, i + 1, false);
             }
@@ -99,11 +103,11 @@ namespace BattleShips.Ships
                         {
                             shipPartHandler.DisableVisual();
                         }
+
+                        shipPartHandler.transform.SetParent(ship.GetShipTransform());
                     }
                 }
             }
-
-            Debug.Log(ship.IsOwnerPlayer());
         }
     }
 }

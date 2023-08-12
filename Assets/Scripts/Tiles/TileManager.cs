@@ -9,6 +9,7 @@ namespace BattleShips.Tiles
         [SerializeField] private GameObject playerTileObj;
 
         [SerializeField] private int width;
+        [Tooltip("Height must be dividable by 2")]
         [SerializeField] private int height;
         [SerializeField] private float borderSize;
 
@@ -23,8 +24,13 @@ namespace BattleShips.Tiles
 
         private void Awake() 
         {
+            if(height % 2 != 0)
+            {
+                Debug.LogError("Height must be dividable by 2! \n You may encounter errors!");
+            }
+
             totalTileAmount = width * height;
-            playerTileAmount = totalTileAmount / 2;
+            playerTileAmount = (int)(totalTileAmount / 2);
 
             tileListEnemy = new (playerTileAmount);
             tileListPlayer = new (playerTileAmount);
@@ -52,7 +58,7 @@ namespace BattleShips.Tiles
 
         private void MakeTile(int x, int y)
         {
-            bool isOwnerPlayer = y < 5;
+            bool isOwnerPlayer = y < (int) height / 2;
             GameObject tilePrefab = isOwnerPlayer ? playerTileObj : tileObj;
 
             GameObject tileObjInstance = Instantiate(tilePrefab, new Vector2(x,y), Quaternion.identity);
@@ -94,6 +100,11 @@ namespace BattleShips.Tiles
 
             Tile tile = tileArrayAll[(int)position.x, (int)position.y];
             return tile;
+        }
+
+        public bool IsTileOwnedByPlayer(Tile tile)
+        {
+            return tileListPlayer.Contains(tile);
         }
 
         public Tile[,] GetTiles()
