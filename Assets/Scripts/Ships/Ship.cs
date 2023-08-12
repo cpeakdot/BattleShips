@@ -1,16 +1,23 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BattleShips.Ships
 {
+    [System.Serializable]
     public class Ship 
     {
-        private GameObject[] shipParts;
+        private List<ShipPartHandler> shipParts = new();
         private bool isOwnerPlayer = false;
 
-        public Ship(GameObject[] shipParts, bool isOwnerPlayer)
+        public void AddShipPart(ShipPartHandler part)
         {
-            this.shipParts = shipParts;
+            if(shipParts.Contains(part)) { return; }
+            shipParts.Add(part);
+        }
+
+        public Ship(bool isOwnerPlayer)
+        {
             this.isOwnerPlayer = isOwnerPlayer;
         }
 

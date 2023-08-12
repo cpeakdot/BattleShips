@@ -18,21 +18,37 @@ namespace BattleShips.Ships
         [SerializeField] private TileManager tileManager;
         [SerializeField] private GameObject[] shipPartPrefabs = new GameObject[SHIP_PER_PLAYER];
 
+        private Ship[] playerShips = new Ship[SHIP_PER_PLAYER];
+        private Ship[] enemyShips = new Ship[SHIP_PER_PLAYER];
+
         private void Start() 
-        {
-            StartCoroutine(SetPlayerShips());    
+        {  
+            SetPlayerShips();
+            SetEnemyShips();
         }
 
-        private IEnumerator SetPlayerShips()
+
+        private void SetPlayerShips()
         {
             for (int i = 0; i < SHIP_PER_PLAYER; i++)
             {
-                CreateShip(i + 1);
-                yield return null;
+                Ship newShip = new Ship(true);
+                playerShips[i] = newShip;
+                CreateShip(newShip, i + 1);
             }
         }
 
-        private void CreateShip(int partAmount, bool isPlayer = true)
+        private void SetEnemyShips()
+        {
+            for (int i = 0; i < SHIP_PER_PLAYER; i++)
+            {
+                Ship newShip = new Ship(true);
+                enemyShips[i] = newShip;
+                CreateShip(newShip, i + 1, false);
+            }
+        }
+
+        private void CreateShip(Ship ship, int partAmount, bool isPlayer = true)
         {
             Tile startingTile = null;
             while (startingTile == null)
@@ -73,12 +89,21 @@ namespace BattleShips.Ships
 
                         ShipPartHandler shipPartHandler = shipPart.GetComponent<ShipPartHandler>();
 
+                        ship.AddShipPart(shipPartHandler);
+
                         tileToAddShip.SetShipPart(shipPartHandler);
 
                         shipPartHandler.Tile = tileToAddShip;
+
+                        if(!isPlayer)
+                        {
+                            shipPartHandler.DisableVisual();
+                        }
                     }
                 }
             }
+
+            Debug.Log(ship.IsOwnerPlayer());
         }
     }
 }
