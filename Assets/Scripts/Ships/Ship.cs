@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,10 +12,15 @@ namespace BattleShips.Ships
         private List<ShipPartHandler> shipParts = new();
         private bool isOwnerPlayer = false;
 
+        private int wreckedBodyPartCount = 0;
+
+        public static event Action<Ship> OnShipWrecked;
+
         public void AddShipPart(ShipPartHandler part)
         {
             if(shipParts.Contains(part)) { return; }
             shipParts.Add(part);
+            part.OnShipPartWrecked += HandleOnShipPartWrecked;
         }
 
         public Ship(bool isOwnerPlayer, Transform parentObjTransform)
@@ -36,6 +42,15 @@ namespace BattleShips.Ships
         public Transform GetShipTransform()
         {
             return parentObjTransform;
+        }
+
+        private void HandleOnShipPartWrecked()
+        {
+            wreckedBodyPartCount++;
+            if(wreckedBodyPartCount == shipParts.Count)
+            {
+                OnShipWrecked?.Invoke(this);
+            }
         }
     }
 }

@@ -8,6 +8,9 @@ namespace BattleShips.Tiles
         [SerializeField] private GameObject tileObj;
         [SerializeField] private GameObject playerTileObj;
 
+        [SerializeField] private GameObject missedSprite;
+        [SerializeField] private GameObject hitSprite;  
+
         [SerializeField] private int width;
         [Tooltip("Height must be dividable by 2")]
         [SerializeField] private int height;
@@ -43,6 +46,9 @@ namespace BattleShips.Tiles
         private void Start() 
         {
             SetupCamera();
+
+            Tile.OnTileHit += HandleOnTileHit;
+            Tile.OnTileMissed += HandleOnTileMissed;
         }
 
         private void CreateTiles()
@@ -89,6 +95,26 @@ namespace BattleShips.Tiles
             float horizontalSize = ((float)width / 2f + (float)borderSize) / aspectRatio;
 
             Camera.main.orthographicSize = (verticalSize > horizontalSize) ? verticalSize : horizontalSize;
+        }
+
+        private void HandleOnTileHit(Tile tile)
+        {
+            SetHitTile(tile);
+        }
+
+        private void HandleOnTileMissed(Tile tile)
+        {
+            SetMissedTile(tile);
+        }
+
+        public void SetMissedTile(Tile tile)
+        {
+            GameObject missedTile = Instantiate(missedSprite, tile.GetPosition(), Quaternion.identity);
+        }
+
+        public void SetHitTile(Tile tile)
+        {
+            GameObject hitTile = Instantiate(hitSprite, tile.GetPosition(), Quaternion.identity);
         }
 
         public Tile GetTile(Vector2 position)

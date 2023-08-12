@@ -1,5 +1,6 @@
 using BattleShips.Tiles;
 using UnityEngine;
+using System;
 
 namespace BattleShips.Ships
 {
@@ -8,6 +9,8 @@ namespace BattleShips.Ships
         [SerializeField] private GameObject visual;
         private bool isAlive = true;
         private Tile tile;
+
+        public event Action OnShipPartWrecked;
 
         public Tile Tile 
         {
@@ -18,7 +21,14 @@ namespace BattleShips.Ships
             set
             {
                 tile = value;
+                tile.OnTileAttacked += HandleOnTileAttacked;
             }
+        }
+
+        private void HandleOnTileAttacked()
+        {
+            isAlive = false;
+            OnShipPartWrecked?.Invoke();
         }
 
         public void DisableVisual()
@@ -30,5 +40,6 @@ namespace BattleShips.Ships
         {
             return isAlive;
         }
+
     }
 }
