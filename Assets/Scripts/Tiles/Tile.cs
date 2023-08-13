@@ -44,7 +44,6 @@ namespace BattleShips.Tiles
         /// <returns> Returns true if hit something </returns>
         public bool TryAttackThisTile()
         {
-            Debug.Log($"Attacked this tile : " + this.ToString());
             OnTileAttacked?.Invoke();
             if(!HasShipPart()) 
             {

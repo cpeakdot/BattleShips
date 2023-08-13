@@ -109,6 +109,10 @@ namespace BattleShips.Ships
                 }
             }
         }
+
+        public IEnumerable GetPlayerShips() => playerShips;
+        public IEnumerable GetEnemyShips() => enemyShips;
+        public int GetShipCountPerPlayer() => SHIP_PER_PLAYER;
     }
 }
 

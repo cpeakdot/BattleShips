@@ -15,6 +15,7 @@ namespace BattleShips.Ships
         private int wreckedBodyPartCount = 0;
 
         public static event Action<Ship> OnShipWrecked;
+        public static event Action OnShipDamaged;
 
         public void AddShipPart(ShipPartHandler part)
         {
@@ -50,6 +51,10 @@ namespace BattleShips.Ships
             if(wreckedBodyPartCount == shipParts.Count)
             {
                 OnShipWrecked?.Invoke(this);
+            }
+            else
+            {
+                OnShipDamaged?.Invoke();
             }
         }
     }
